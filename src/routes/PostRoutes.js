@@ -1,10 +1,10 @@
 const express = require('express');
-const { getData, postData } = require('../controllers/postControllers.js');
+const { getData, postData, validationid} = require('../controllers/postControllers.js');
 const routerPost = express.Router();
 
 routerPost.get('',getData);
 
-  routerPost.post('',postData);
+  routerPost.post('',validationid,postData);
 
   routerPost.delete('/:id', function(req, res) {
     res.send('post page');
