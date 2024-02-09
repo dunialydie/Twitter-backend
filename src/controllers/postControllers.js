@@ -1,9 +1,11 @@
+const uuid  = require('uuid');
+const uniqueid = uuid.v4();
 const { dataPosts } = require('../models/dataPosts.js');
-const joi=require('joi');
-const schema=joi.object({
-    userId:dataPosts.id
-})
+const { dataSchema } = require('../models/dataSchema.js');
 
+console.log("========================");
+console.log(uniqueid);
+console.log("========================");
 
 /**controlleur get posts */
 const getData= (req,res)=>{
@@ -11,48 +13,26 @@ const getData= (req,res)=>{
     res.json({dataPosts});
 }
 /**Validation des champs */
-const validationid= (req, res,next)=>{
-         if(req.body.title===""){
-            res.status(401).send('Veuillez remplir ce champ') 
-        }else if(req.body.url===""){
-            if(req.body.body==""){
-                res.status(401).send('Veuillez remplir ce champ') 
-            }
-            res.status(200);
-        }
+const validation= (req, res,next)=>{
+    // const{dataSchema} = req.body
+    const {body, url, thumbnailUrl,title}= req.body
+    const {error}= dataSchema.validate(req.body)
+    if(error){
+        return res.status(401).send(error.details)
+    }  
+    // console.log(result);
+//    console.log(req.body);
+//    console.log(dataSchema);
     next()
 
 }
-// const validationString=(req, res,next)=>{
-//     if(req.body.title==="" || req.body.body===""){
-//         res.status(401).send('Veuillez remplir ce champ') 
-//     }
-//     // postData(req, res)
-//     next()
-// //     check(req.title).trim().not().isEmpty().withMessage('veuillez renseigner ce champs'),
-// //     check(req.body).trim().not().isEmpty().withMessage('veuillez renseigner ce champs')
-// }
-    
-    
 
-// const result= (req, res, next)=>{
-//     const result= validationResult(req);
-//     const hasError=!result.isEmpty()
-
-//     if(hasError){
-//         const error=result.array()[0].msg
-//         res.status(401).json({success: false, message: error})
-//         // res.status(401)
-//     }
-//     next()
-// }
 
 /**controlleur post posts */
 
 const postData= (req, res)=>{
-    id=dataPosts.length + 1;
-    console.log(id);
-    req.body.id=id;
+    req.body.id = uniqueid;
+    console.log("id:" + req.body.id);
     let data= req.body
     dataPosts.push(data)
     getData(req,res)
@@ -61,7 +41,7 @@ const postData= (req, res)=>{
 module.exports={
     getData, 
     postData, 
-    validationid,
+    validation,
     // validationString,
 }
 
