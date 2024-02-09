@@ -1,11 +1,6 @@
 const uuid  = require('uuid');
-const uniqueid = uuid.v4();
 const { dataPosts } = require('../models/dataPosts.js');
 const { dataSchema } = require('../models/dataSchema.js');
-
-console.log("========================");
-console.log(uniqueid);
-console.log("========================");
 
 /**controlleur get posts */
 const getData= (req,res)=>{
@@ -14,24 +9,22 @@ const getData= (req,res)=>{
 }
 /**Validation des champs */
 const validation= (req, res,next)=>{
-    // const{dataSchema} = req.body
     const {body, url, thumbnailUrl,title}= req.body
     const {error}= dataSchema.validate(req.body)
     if(error){
         return res.status(401).send(error.details)
     }  
-    // console.log(result);
-//    console.log(req.body);
-//    console.log(dataSchema);
     next()
-
 }
 
-
 /**controlleur post posts */
-
 const postData= (req, res)=>{
+    let uniqueid = uuid.v4();
     req.body.id = uniqueid;
+    console.log("========================");
+    console.log(uniqueid);
+    console.log("========================");
+
     console.log("id:" + req.body.id);
     let data= req.body
     dataPosts.push(data)
@@ -42,6 +35,5 @@ module.exports={
     getData, 
     postData, 
     validation,
-    // validationString,
 }
 

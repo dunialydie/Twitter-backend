@@ -1,5 +1,23 @@
 const joi = require('joi');
-const multer  = require('multer')
+const multer  = require('multer');
+const path= require('path')
+
+
+const storage= multer.diskStorage({
+    destination:(req, file, cb)=>{
+        cb(null,'uploads')
+    },
+
+    filename:(req, file, cb)=>{
+        console.log("file:" + file);
+        cb(null, Date.now() + path.extname(file.originalname))
+        console.log("uploadid:" + req.body.file);
+    }
+})
+const upload = multer({ dest: storage })
+
+console.log("upload:" + upload.filename);
+
 
 const dataSchema= joi.object(
     {
@@ -16,5 +34,5 @@ const dataSchema= joi.object(
 
 
 module.exports= {
-    dataSchema
+    dataSchema, upload
 }
