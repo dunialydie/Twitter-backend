@@ -38,15 +38,14 @@ const postData= (req, res)=>{
 const deletePost= (req, res)=>{
     const id= req.params.id -1;
 
-    res.json({
-        
-    })
+    dataPosts.splice(id,1)
+
+    res.status(200).send('post deleted')
 }
 
 const modifierPost= (req, res)=>{
     const data= req.body;
     const id= req.params.id -1;
-
     dataPosts[id] = Object.assign(dataPosts[id], data);
     res.json({
         data: dataPosts[id]
@@ -57,5 +56,6 @@ module.exports={
     postData, 
     validation,
     modifierPost,
+    deletePost,
 }
 

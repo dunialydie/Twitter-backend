@@ -1,5 +1,5 @@
 const express = require('express');
-const { getData, postData, validation, modifierPost} = require('../controllers/postControllers.js');
+const { getData, postData, validation, modifierPost, deletePost} = require('../controllers/postControllers.js');
 const { upload } = require('../models/dataSchema.js');
 const routerPost = express.Router();
 
@@ -7,9 +7,7 @@ const routerPost = express.Router();
 
   routerPost.post('',validation,upload.single(""),postData);
 
-  routerPost.delete('/:id', function(req, res) {
-    res.send('poste page');
-  });
+  routerPost.delete('/:id', deletePost);
 
   routerPost.put('/:id', modifierPost);
 
