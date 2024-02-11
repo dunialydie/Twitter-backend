@@ -1,5 +1,5 @@
 const express = require('express');
-const { getData, postData, validation} = require('../controllers/postControllers.js');
+const { getData, postData, validation, modifierPost} = require('../controllers/postControllers.js');
 const { upload } = require('../models/dataSchema.js');
 const routerPost = express.Router();
 
@@ -11,9 +11,7 @@ const routerPost = express.Router();
     res.send('poste page');
   });
 
-  routerPost.put('/:id', function(req, res) {
-    res.send('posts home ');
-  });
+  routerPost.put('/:id', modifierPost);
 
 
   module.exports = routerPost;
