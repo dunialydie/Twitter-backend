@@ -5,7 +5,16 @@ const routerPost = express.Router();
 
   routerPost.get('',getData);
 
-  routerPost.post('',validation,upload.single(""),postData);
+  routerPost.post('',validation,upload.single("image"),postData,(req,res)=>{
+    if(err){
+      res.status(401).send('not good')
+    }
+    res.status(200)
+    req.json({status: 'ok', data: req.file})
+    console.log("req.file:" + req.file);
+    console.log("file uploaded");
+
+  });
 
   routerPost.delete('/:id', deletePost);
 
