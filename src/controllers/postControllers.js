@@ -1,8 +1,9 @@
 const uuid  = require('uuid');
 const { dataPosts } = require('../models/dataPosts.js');
 const { dataSchema } = require('../models/dataSchema.js');
-const { object } = require('joi');
-
+const { LikeData } = require('./Likecontrollers.js');
+const { dataUsers } = require('../models/dataUsers.js');
+const like=[]
 /**controlleur get posts */
 const getData= (req,res)=>{
     res.status(200);
@@ -22,12 +23,11 @@ const validation= (req, res,next)=>{
 const postData= (req, res)=>{
     let uniqueid = uuid.v4();
     req.body.id = uniqueid;
-    console.log("========================");
-    console.log(uniqueid);
-    console.log("========================");
-
-    console.log("id:" + req.body.id);
+    req.body.liked= LikeData.length;
+    req.body.userId= dataUsers.userId;
+    console.log('dataUsers.userId' + dataUsers.userId);
     let data= req.body
+    console.log(req.body);
     data.url = req.file?.path
 
     if(req.body.body || (req?.file && req.file?.path)) {
@@ -46,7 +46,7 @@ const deletePost= (req, res)=>{
     dataPosts.splice(id,1)
     res.status(200).send('post deleted')
 }
-/**controller modifier post */
+/**controller put post */
 const modifierPost= (req, res)=>{
     const data= req.body;
     const id= req.params.id -1;
@@ -54,6 +54,7 @@ const modifierPost= (req, res)=>{
     res.json({
         data: dataPosts[id]
     })
+    
 }
 module.exports={
     getData, 

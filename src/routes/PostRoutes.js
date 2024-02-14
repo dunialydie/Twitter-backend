@@ -11,8 +11,6 @@ const routerPost = express.Router();
     }
     res.status(200)
     req.json({status: 'ok', data: req.file})
-    console.log("req.file:" + req.file);
-    console.log("file uploaded");
 
   });
 

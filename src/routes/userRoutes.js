@@ -1,18 +1,15 @@
 const express = require('express');
+const { getUsers, postUser } = require('../controllers/usersControllers');
 const routerUsers = express.Router();
 
-routerUsers.get('', function(req, res) {
-    res.send('users');
-  });
+routerUsers.get('', getUsers);
 
   routerUsers.get('/:id', function(req, res) {
     res.send('user '+req.params.id);
   });
 
 
-  routerUsers.post('', function(req, res) {
-    res.send('user home page');
-  });
+  routerUsers.post('', postUser);
 
   routerUsers.delete('/:id', function(req, res) {
     res.send('userdelete home page');

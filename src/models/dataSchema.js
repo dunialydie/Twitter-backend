@@ -27,8 +27,6 @@ const storage= multer.diskStorage({
 })
 const upload = multer({ storage })
 
-
-
 const dataSchema= joi.object(
     {
         body:joi.any(),
