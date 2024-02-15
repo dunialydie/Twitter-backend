@@ -58,33 +58,6 @@ const postData= {
         else{
             return res.status(422).send('')
         }
-    },
-    get: (req, res) => {
-        const datalike = req.body;
-        let likeFound = false; 
-        dataPosts.forEach((elem)=>{
-            /**si un utilisateur like c'est maintenant qu'on ajoute */
-            datalike.userId=elem.userId;
-            datalike.postID= elem.id
-            console.log("datalike.userId" + datalike.userId);
-            //likestab.push(datalike.userId, datalike.postID)
-            console.log('likestab:' + likestab);
-        for (let i = 0; i < likestab.length; i++) {
-            if (likestab[i].userId === datalike.userId && likestab[i].id === datalike.postId) {
-                // Like trouvé, on le retire
-                console.log("Like retiré pour l'indice", i);
-                likestab.splice(i, 1);
-                likeFound = true;
-                break; 
-            }
-        }
-        if (!likeFound) {
-            // Si le like n'est pas trouvé, on l'ajoute
-            likestab.push(datalike);
-        }
-        })
-        
-        res.json(likestab);
     }
 }
 
