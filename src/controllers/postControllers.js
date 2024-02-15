@@ -40,8 +40,7 @@ const validation= (req, res,next)=>{
 }
 
 /**controlleur post posts */
-const postData= {
-    post: (req,res)=>{
+const postData= (req,res)=>{
         const {id, like, userId, body,}= req.body;
         let uniqueid = uuid.v4();
         req.body.id = uniqueid;
@@ -59,7 +58,6 @@ const postData= {
             return res.status(422).send('')
         }
     }
-}
 
 /**Contoller delete post */
 

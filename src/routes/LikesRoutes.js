@@ -3,7 +3,7 @@ const { getlikes, LikeData } = require('../controllers/Likecontrollers.js');
 const { postData, likePost} = require('../controllers/postControllers.js');
 const routerLikes = express.Router();
 
-routerLikes.get('', postData.get);
+routerLikes.get('', postData);
 routerLikes.post('', likePost);
 
 // routerLikes.get('/:id');
