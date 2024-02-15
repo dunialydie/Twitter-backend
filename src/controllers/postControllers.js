@@ -3,11 +3,31 @@ const { dataPosts } = require('../models/dataPosts.js');
 const { dataSchema } = require('../models/dataSchema.js');
 const { LikeData } = require('./Likecontrollers.js');
 const { dataUsers } = require('../models/dataUsers.js');
+const { likestab } = require('../models/likes.js');
+const { post } = require('../routes/userRoutes.js');
 const like=[]
 /**controlleur get posts */
 const getData= (req,res)=>{
     res.status(200);
     res.json(dataPosts);
+}
+
+const likePost = (req,res)=>{
+
+    const { userId, postId } = req.body;
+
+    let liked = likestab.filter((data) => data.userId == userId && data.postId == postId );
+
+    if(liked.length) {
+        console.log('retirer');
+    }
+    else {
+        console.log('ADD');
+        likestab.push({userId, postId})
+    }
+
+    res.status(200);
+    res.json(likestab);
 }
 /**Validation des champs */
 const validation= (req, res,next)=>{
@@ -20,22 +40,51 @@ const validation= (req, res,next)=>{
 }
 
 /**controlleur post posts */
-const postData= (req, res)=>{
-    let uniqueid = uuid.v4();
-    req.body.id = uniqueid;
-    req.body.liked= LikeData.length;
-    req.body.userId= dataUsers.userId;
-    console.log('dataUsers.userId' + dataUsers.userId);
-    let data= req.body
-    console.log(req.body);
-    data.url = req.file?.path
-
-    if(req.body.body || (req?.file && req.file?.path)) {
-        dataPosts.push(data)
-        res.status(201).json(data);
-    }
-    else{
-        return res.status(422).send('')
+const postData= {
+    post: (req,res)=>{
+        const {id, like, userId, body,}= req.body;
+        let uniqueid = uuid.v4();
+        req.body.id = uniqueid;
+        req.body.like=0;
+        req.body.userId= uuid.v4();
+        let data= req.body
+        console.log(req.body);
+        data.url = req.file?.path
+    
+        if(req.body.body || (req?.file && req.file?.path)) {
+            dataPosts.push(data)
+            res.status(201).json(data);
+        }
+        else{
+            return res.status(422).send('')
+        }
+    },
+    get: (req, res) => {
+        const datalike = req.body;
+        let likeFound = false; 
+        dataPosts.forEach((elem)=>{
+            /**si un utilisateur like c'est maintenant qu'on ajoute */
+            datalike.userId=elem.userId;
+            datalike.postID= elem.id
+            console.log("datalike.userId" + datalike.userId);
+            //likestab.push(datalike.userId, datalike.postID)
+            console.log('likestab:' + likestab);
+        for (let i = 0; i < likestab.length; i++) {
+            if (likestab[i].userId === datalike.userId && likestab[i].id === datalike.postId) {
+                // Like trouvé, on le retire
+                console.log("Like retiré pour l'indice", i);
+                likestab.splice(i, 1);
+                likeFound = true;
+                break; 
+            }
+        }
+        if (!likeFound) {
+            // Si le like n'est pas trouvé, on l'ajoute
+            likestab.push(datalike);
+        }
+        })
+        
+        res.json(likestab);
     }
 }
 
@@ -62,5 +111,6 @@ module.exports={
     validation,
     modifierPost,
     deletePost,
+    likePost
 }
 

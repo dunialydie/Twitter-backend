@@ -8,31 +8,40 @@ const getlikes= (req,res)=>{
 }
 
 const LikeData= (req, res)=>{
-    // const {userId, postID} = req.body;
-    // req.body.userId='1';
-    // req.body.postID='2'
-    
-    // let userId= dataUsers.dataUsers
-    // req.body.userId=dataUsers.userId;
-    // req.body.postID= dataPosts.id;
-    // let data= req.body
-    // console.log(data);
 
-    const verifyUser= dataUsers.find(user=> user.userId === userId)
-    const verifyPost= dataPosts.find(post=> post.id === postID)
+    const {userId, postID} = req.body;
+    // req.body.userId=dataUsers.length -1;
+    // req.body.postID= dataPosts.length - 1;
+   
+    console.log('dataPosts:' + dataPosts);
+    // const verifyUser= dataUsers.find(user=> user.userId === userId)
+    // const verifyPost= dataPosts.find(post=> post.id === postID)
 
-    // if(!verifyPost || !verifyUser){
+    if(likestab.length>0){
+        dataPosts.forEach((elem)=>{
+            userId=elem.userId;
+            postID= elem.id
+
+        })
+        likestab.push(req.body)
+
+        // dataPosts.liked -= 1
+        // console.log(dataPosts.liked);
+        // res.send(req.body)
+        // likestab.push(req.body)
+        console.log("likestab:" + likestab);
+        res.send(likestab)
+
+
+    }
+
+    // else if(!verifyPost && !verifyUser){
+    //     //aller dans le tableau des poste et incrémenter
+    //     dataPosts.liked += 1
+
     //     return res.status(400).send('incrémenter')
     // }
-    likestab.push(data)
-    console.log(likestab);
-    console.log(likestab);
-    console.log("LikeData:" + LikeData);
 
-    console.log(data);
-
-    res.send(data)
-    
 }
 
-module.exports={getlikes, LikeData}
+module.exports={ LikeData}

@@ -7,9 +7,13 @@ routerUsers.get('', getUsers);
   routerUsers.get('/:id', function(req, res) {
     res.send('user '+req.params.id);
   });
+  routerUsers.post('', function(req, res) {
+    res.send('post');
+  });
 
-
-  routerUsers.post('', postUser);
+  routerUsers.post('/id', function(req, res) {
+    res.send('post '+req.params.id);
+  });
 
   routerUsers.delete('/:id', function(req, res) {
     res.send('userdelete home page');

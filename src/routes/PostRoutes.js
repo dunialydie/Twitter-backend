@@ -5,7 +5,7 @@ const routerPost = express.Router();
 
   routerPost.get('',getData);
 
-  routerPost.post('',validation,upload.single("image"),postData,(req,res)=>{
+  routerPost.post('',validation,upload.single("image"),postData.post,(req,res)=>{
     if(err){
       res.status(401).send('not good')
     }
