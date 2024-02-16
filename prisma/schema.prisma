@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modèle pour les utilisateurs
+model User {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
+  name      String?
+  posts     PostUser[]  // Relation vers la table PostUser, pour definir une relation un à plusieurs
+  roles     UserRole[]  // Relation vers la table UserRole, pour definir une relation un à plusieurs
+}
+
+// Modèle pour les posts
+model Post {
+  id      Int         @id @default(autoincrement())
+  title   String
+  content String
+  users   PostUser[]  // Relation vers la table PostUser, pour definir une relation un à plusieurs
+}
+
+// Table associative entre Users et Posts
+model PostUser {
+  postId  Int
+  userId  Int
+  post    Post  @relation(fields: [postId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
+  @@id([postId, userId]) // Clé primaire composite car dépendent des autres champs des tables différents
+}
+
+// Modèle pour les rôles
+model Role {
+  id        Int         @id @default(autoincrement())
+  roleName  String
+  users     UserRole[]  // Relation vers la table UserRole
+}
+
+// Table associative entre Users et Roles
+model UserRole {
+  userId  Int
+  roleId  Int
+  user    User  @relation(fields: [userId], references: [id])
+  role    Role  @relation(fields: [roleId], references: [id])
+  @@id([userId, roleId]) // Clé primaire composite
+}
