@@ -15,6 +15,7 @@ model User {
   id        Int         @id @default(autoincrement())
   email     String      @unique
   name      String?
+  password  String
   posts     PostUser[]  // Relation vers la table PostUser, pour definir une relation un à plusieurs
   roles     UserRole[]  // Relation vers la table UserRole, pour definir une relation un à plusieurs
 }
